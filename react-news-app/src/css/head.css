@@ -1,9 +1,0 @@
-.color{
-  color: yellow;
-}
-
-
-.bigFont {
-  composes: color;
-  font-size: 50px;
-}

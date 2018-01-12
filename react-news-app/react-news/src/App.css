@@ -1,26 +1,24 @@
-@import '~antd/dist/antd.css';
-
-:global(.App) {
+.App {
   text-align: center;
 }
 
-:global(.App-logo) {
+.App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
 
-:global(.App-header) {
+.App-header {
   background-color: #222;
   height: 150px;
   padding: 20px;
   color: white;
 }
 
-:global(.App-title) {
+.App-title {
   font-size: 1.5em;
 }
 
-:global(.App-intro) {
+.App-intro {
   font-size: large;
 }
 
