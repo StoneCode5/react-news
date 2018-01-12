@@ -7,7 +7,7 @@ import {
   Tabs,
   message,
   Form,
-  Input,
+  // Input,
   Button,
   Modal
 } from 'antd';
@@ -15,40 +15,54 @@ import logo from '../image/logo.png'
 // import axios from 'axios'
 import '../css/head.scss';
 // import ReactDOM from 'react-dom';
-const FormItem = Form.Item;
+// const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 
 
+class Abc extends React.Component {
 
+  handleSubmit() {
+    alert('通信成功')
+  }
+  render() {
+    return (
+      <h1>child</h1>
+    )
+  }
+}
 
-// class NormalLoginForm extends React.Component {
+class NormalLoginForm extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
 
-//   handleSubmit = (e) => {
-//     e.preventDefault();
-//     this.props.form.validateFields((err, values) => {
-//       if (!err) {
-//         console.log('Received values of form: ', values);
-//       }
-//     });
-//   }
-//   render() {
-//     const { getFieldDecorator } = this.props.form;
-//     return (
-//       <Form horizontal onSubmit={this.handleSubmit.bind(this)}>
-//       <FormItem label="账户">
-//         {/* <Input placeholder="请输入您的账号" {...getFieldProps('userName') } /> */}
-//         {getFieldDecorator(this.state.userNickName, {
-//           rules: [{ required: true, message: 'Please input your username!' }],
-//         })(
-//           <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
-//         )}
-//       </FormItem>
-//     </Form>
-//     )
-//   }
-// }
+  handleSubmit() {
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        // this.props.handleSubmit()
+      }
+    });
+  }
+  render() {
+    // const { getFieldDecorator } = this.props.form;
+    return (
+      <Form horizontal onSubmit={this.handleSubmit.bind(this)}>
+        <FormItem label="账户">
+          {/* <Input placeholder="请输入您的账号" {...getFieldProps('userName') } /> */}
+          {getFieldDecorator('userName', {
+            rules: [{ required: true, message: 'Please input your username!' }],
+          })(
+            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+            )}
+        </FormItem>
+      </Form>
+    )
+  }
+}
 
-const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
+const LoginForm = Form.create()(NormalLoginForm);
 
 
 export default class Header extends React.Component {
@@ -63,6 +77,7 @@ export default class Header extends React.Component {
       userid: 0,
       btnLoading: false
     }
+    this.handleModelOk = this.handleModelOk.bind(this)
   }
 
   logout() {
@@ -74,7 +89,9 @@ export default class Header extends React.Component {
   }
 
   handleModelOk() {
-
+    console.log(this.refs.loginForm)
+    this.refs.loginForm.handleSubmit()
+    // this.refs.login.handleSubmit()
   }
 
   handleModelCancel() {
@@ -84,11 +101,12 @@ export default class Header extends React.Component {
 
   }
   handleSubmit() {
-    
+
   }
   handleMenuClick({ key }) {
     if (key === 'register') {
       this.setState({ current: key })
+      this.setModalVisible(true)
       // 打开model
     } else {
       console.warn('go to other page');
@@ -96,7 +114,6 @@ export default class Header extends React.Component {
     // console.warn('click', item);
   }
   render() {
-    let { getFieldDecorator  } = this.props.form;
     const loginedModel =
       <Menu.Item key="logout" class="register">
         <Button type="primary" htmlType="button">{this.state.userNickName}</Button>
@@ -159,24 +176,27 @@ export default class Header extends React.Component {
           visible={this.state.modalVisible}
           onCancel={() => this.setModalVisible(false)}
           onOk={() => this.setModalVisible(false)}
-          footer={[
-            <Button key="back" onClick={this.handleModelCancel}>返回</Button>,
-            <Button key="submit" type="primary" loading={this.state.btnLoading} onClick={this.handleModelOk}>
-              {this.state.action ? '登陆' : '注册'}
-            </Button>,
-          ]}>
+          // footer={[
+          //   <Button key="back" onClick={this.handleModelCancel}>返回</Button>,
+          //   <Button key="submit" type="primary" loading={this.state.btnLoading} onClick={this.handleModelOk}>
+          //     {this.state.action ? '登陆' : '注册'}
+          //   </Button>,
+          // ]}
+          >
           <Tabs type="card" onChange={this.tabChange.bind(this)}>
             <TabPane tab="登录" key="1">
-              <Form horizontal onSubmit={this.handleSubmit.bind(this)}>
-                <FormItem label="账户">
-                  {/* <Input placeholder="请输入您的账号" {...getFieldProps('userName') } /> */}
-                  {getFieldDecorator(this.state.userNickName, {
+              {/* <Form horizontal onSubmit={this.handleSubmit.bind(this)}>
+                <FormItem label="账户"> */}
+              {/* <Input placeholder="请输入您的账号" {...getFieldProps('userName') } /> */}
+              {/* {getFieldDecorator(this.state.userNickName, {
                     rules: [{ required: true, message: 'Please input your username!' }],
                   })(
                     <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
-                  )}
-                </FormItem>
-              </Form>
+                  )} */}
+              {/* </FormItem>
+              </Form> */}
+              <LoginForm  />
+              <Abc ref="login" />
             </TabPane>
             <TabPane tab="注册" key="2">
               <Form horizontal onSubmit={this.handleSubmit.bind(this)}>
